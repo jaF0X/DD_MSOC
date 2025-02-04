@@ -1,0 +1,296 @@
+Below is a base Incident Management Plan designed for a managed Security Operations Center (SOC) 
+that monitors on-prem, cloud, and hybrid environments. This plan aligns with relevant guidelines 
+from **NIST SP 800-61 (Computer Security Incident Handling Guide)**, 
+**ISO/IEC 27035 (Information security incident management)**, 
+and incorporates the **SANS Incident Handling Steps** as a framework. It is structured to accommodate
+typical roles (L1, L2, L3, Team Leads, SOC Manager) and focuses on thorough documentation,
+client communication, and post-incident lessons learned.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+1. Purpose and Scope
+
+1. Purpose
+   This Incident Management Plan outlines the processes for detecting, analyzing, containing, eradicating, recovering from, and reviewing security incidents. It provides guidelines for communication, escalation, and documentation to ensure effective and efficient incident response.
+
+2. Scope 
+   - Applies to all incidents affecting systems and networks monitored by the SOC.  
+   - Covers on-prem, cloud, and hybrid environments.  
+   - Incorporates best practices from NIST 800-61, ISO 27035, and the SANS Incident Handling steps.  
+   - Designed for a single-site SOC providing managed security services to multiple customer organizations.
+
+3. Key Objectives 
+   - Timely Incident Detection: Ensure alerts from monitoring tools (e.g., Datadog SIEM) are quickly assessed.  
+   - Efficient Escalation & Coordination:** Define clear roles and responsibilities (L1, L2, L3, Team Lead, SOC Manager).  
+   - Effective Communication: Use ServiceNow for ticketing, Slack for collaboration, PagerDuty for urgent notifications, and email where appropriate.  
+   - Thorough Documentation: Record all incident details, actions taken, and lessons learned in a centralized repository.  
+   - Continuous Improvement: Incorporate lessons learned back into the SOC processes.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+2. Incident Response Framework
+
+We will align incident response with the **SANS Incident Handling Steps** (Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned), supplemented by **NIST 800-61** and **ISO 27035** guidance.
+
+1. Preparation  
+   - Maintain up-to-date monitoring rules, correlation alerts, and threat intelligence feeds in Datadog.
+        --> TO DO: Move Splunk/Elastic rules into github for future deployment
+
+   - Ensure incident response playbooks are accessible to all analysts.
+        --> TO DO: create repsonse playbooks and investigation SOPs
+
+   - Establish communication protocols with all stakeholder. Gather roster of contacts.
+        --> TO DO: PACE Plan establishment for each tier of incident
+            -- Critical   : PagerDuty / Case Management / ServiceNow, Slack, email , phone
+            -- High       : PagerDuty / Case Management / ServiceNow, Slack, email , phone
+            -- Medium     : Case Management / ServiceNow, Slack , email , N/A
+            -- Low / Info : Slack, email , N/A , N/A
+        ** Likely will change from customer-to-customer
+    
+    - Establish proper Team and Project alignment within Datadog for proper Caes Management tracking
+        --> TO DO: Create base alignment chart using L1 / L2 / L3 organization
+        --> TO DO: Establish escalation criteria if necessary
+
+2. **Identification  
+   - Monitor alerts from Datadog SIEM, use threat intelligence platforms for proactive hunts.
+        --> TO DO: Identify best open source threat feeds for use
+
+   - Triage alerts to confirm if a security event qualifies as a security incident.
+        --> TO DO: Establish Security Signal > Event > Case Opening criteria
+        
+   - Assign severity and priority levels based on potential impact.
+        --> TO DO: Create wording to align this with customer needs
+
+3. Containment 
+     ** THIS SECTION IS NOT FOR RAPDEV ACTION. RAPDEV MSOC SERVICES DO NOT CARRY OUT CONTAINMENT,
+     ** ERADICATION, OR RECOVERY. HOWEVER, RAPDEV WILL ADVISE ON COA'S FOR THESE STEPS.
+
+   - Implement short-term containment measures (e.g., isolate the affected host from the network, disable compromised accounts).  
+   - Coordinate with customer IT teams (if applicable) to ensure minimal disruption to critical services.
+
+4. Eradication
+     ** THIS SECTION IS NOT FOR RAPDEV ACTION. RAPDEV MSOC SERVICES DO NOT CARRY OUT CONTAINMENT,
+     ** ERADICATION, OR RECOVERY. HOWEVER, RAPDEV WILL ADVISE ON COA'S FOR THESE STEPS.
+
+   - Identify the root cause and remove the threat (e.g., clean or reimage infected systems, delete malicious files, fix vulnerabilities).  
+   - Apply patches, change credentials, or perform other mitigations as needed.
+
+5. Recovery
+     ** THIS SECTION IS NOT FOR RAPDEV ACTION. RAPDEV MSOC SERVICES DO NOT CARRY OUT CONTAINMENT,
+     ** ERADICATION, OR RECOVERY. HOWEVER, RAPDEV WILL ADVISE ON COA'S FOR THESE STEPS.
+
+   - Validate that systems are free from threats and can be safely brought back online.  
+   - Restore from backups if required.  
+   - Conduct post-recovery validation (e.g., network scans, monitoring logs) to confirm success.
+
+6. Lessons Learned
+   - Document all findings, timelines, and actions taken.
+        --> TO DO: Create SOPs for documentation; can use Notebooks with Datadog, but established
+                    how Rapdev will structure its documentation to be repeatable
+
+   - Conduct post-incident review to identify procedural or security control gaps. 
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+3. Roles and Responsibilities
+
+3.1 Level 1 (L1) SOC Analyst
+- **Primary Role:** First responder; monitors SIEM dashboards and alerts (Datadog).  
+- **Responsibilities:**  
+  1. **Alert Monitoring & Validation:** Review real-time alerts, assess potential impact, and validate if an incident is occurring.  
+  2. **Initial Triage:** Determine the urgency and severity based on established criteria.  
+  3. **Ticket Creation & Documentation:** Open a ServiceNow ticket for each potential incident with initial findings and timeline.  
+  4. **Escalation to L2:** Notify L2 analyst or on-call personnel (via Slack or PagerDuty) if the incident is confirmed or if further investigation is needed.  
+  5. **Communication:** Provide succinct initial updates to the SOC Team Lead.
+
+3.2 Level 2 (L2) SOC Analyst
+- **Primary Role:** Deep-dive investigations and incident confirmation.  
+- **Responsibilities:**  
+  1. **Advanced Analysis:** Investigate suspicious alerts escalated by L1 using additional data sources (EDR logs, firewall logs, threat intel).  
+  2. **Incident Classification:** Confirm if an actual security incident is occurring and classify the type (e.g., malware infection, unauthorized access, phishing).  
+  3. **Initial Containment Actions:** Initiate containment procedures in collaboration with the customer’s IT team (e.g., isolating systems, blocking indicators).  
+  4. **Escalation to L3:** If the incident is complex, high-risk, or requires specialized expertise, escalate with detailed analysis.  
+  5. **Documentation:** Update ServiceNow tickets with investigative steps, evidence, and timeline.
+
+3.3 Level 3 (L3) SOC Analyst
+- **Primary Role:** Subject matter expert; designs containment/eradication strategies for complex incidents.  
+- **Responsibilities:**  
+  1. **Root Cause Analysis:** Use forensic techniques and advanced tools to determine the scope and root cause of incidents.  
+  2. **Eradication & Recovery Plans:** Develop tailored eradication and recovery strategies in coordination with the client’s infrastructure teams.  
+  3. **Threat Intelligence Correlation:** Cross-reference threat intelligence feeds, correlate IOCs (Indicators of Compromise) across broader datasets.  
+  4. **Coordination with External Teams:** Engage with third-party vendors (if required) or specialized teams for specific incident response activities.  
+  5. **Technical Guidance:** Provide detailed remediation steps and guidance to L2 and local IT/Engineering teams.  
+  6. **Documentation:** Update the incident ticket with technical findings, recommended solutions, and final outcomes.
+
+3.4 Team Leader (TL)
+- **Primary Role:** Operational oversight of the SOC analysts (L1, L2, L3).  
+- **Responsibilities:**  
+  1. **Task Coordination:** Ensure tasks are appropriately assigned and the incident response timeline is on track.  
+  2. **Quality Assurance:** Review investigation steps and confirm the accuracy and completeness of documentation.  
+  3. **Resource Allocation:** Coordinate additional resources or specialized skills if the incident escalates.  
+  4. **Client Communication:** Act as a point of contact for client updates when incidents are in progress (unless an Incident Commander is activated).  
+  5. **Incident Reporting:** Oversee final incident reporting and ensure sign-off from relevant stakeholders.
+
+3.5 SOC Manager / Incident Commander (If Activated)
+- **Primary Role:** Overall leadership in critical or high-severity incidents that may have significant business impact.  
+- **Responsibilities:**  
+  1. **Strategic Decision-Making:** Make executive-level decisions regarding resource mobilization, public communication, and external reporting.  
+  2. **Executive Updates:** Communicate incident status to senior management or executives within the customer organization.  
+  3. **Legal/Compliance Coordination:** Engage legal counsel or compliance officers if there is potential liability or regulatory reporting requirements.  
+  4. **Final Approval:** Approve major containment or recovery actions that could affect critical business operations.  
+  5. **Post-Incident Review:** Ensure thorough lessons-learned sessions are conducted and follow-up actions are implemented.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+4. Incident Classification and Severity Levels
+
+Define categories and severity levels to ensure consistent triage and escalation. Below is an example structure:
+
+1. **Severity 1 – Critical:** Significant business impact (e.g., large-scale ransomware outbreak).  
+2. **Severity 2 – High:** Potential for major compromise or data loss if not contained quickly (e.g., targeted malware, privilege escalation).  
+3. **Severity 3 – Medium:** Localized incidents with limited impact (e.g., single host malware infection).  
+4. **Severity 4 – Low:** Suspicious activity or minor policy violations with minimal immediate impact (e.g., repeated failed logins).
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+## 5. Incident Handling Procedures
+
+Below is an overview aligned with the **SANS Incident Handling Steps**:
+
+### 5.1 Preparation
+- Maintain an updated **Incident Response Playbook** for each incident type (malware, phishing, insider threat, etc.).  
+- Update **threat intelligence feeds** in Datadog and ensure correlation rules are functioning.  
+- Conduct **training** and **tabletop exercises** quarterly.  
+- Keep contact lists (internal SOC, customer IT, vendors) in an accessible location.
+
+### 5.2 Identification
+1. **Alert Generated:** Datadog SIEM sends an alert to the L1 queue.  
+2. **Initial Analysis:** L1 evaluates the log data, checks severity, and opens or updates a ServiceNow ticket.  
+3. **Notification:** If suspicious, L1 alerts the Team Lead and escalates to L2 as needed.
+
+### 5.3 Containment
+1. **Short-Term Containment:** L2 coordinates with the client’s IT team to isolate affected systems or accounts.  
+2. **Coordination:** L2 or L3 uses Slack/PagerDuty for real-time collaboration with relevant stakeholders.  
+3. **Monitoring:** Datadog dashboards are monitored for related events or lateral movement.
+
+### 5.4 Eradication
+1. **Root Cause Analysis:** L3 investigates deeply to confirm the full scope.  
+2. **Remediation Steps:** Remove malicious files, reimage compromised systems, patch vulnerabilities.  
+3. **Validation:** Check logs and threat intelligence for any remaining IOCs.
+
+### 5.5 Recovery
+1. **System Restoration:** Bring systems back online gradually, verifying they are free from threats.  
+2. **Credentials & Access:** Reset passwords or tokens if accounts were compromised.  
+3. **Testing:** Conduct scans and verify normal operation.
+
+### 5.6 Lessons Learned
+1. **Post-Incident Review:** Within two weeks of incident closure, hold a meeting with all involved parties.  
+2. **Documentation:** Capture the timeline, root cause, and response effectiveness in the Incident Report.  
+3. **Process Improvement:** Update SOC runbooks, detection rules in Datadog, or escalate changes to the customer environment.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+## 6. Documentation and Reporting
+
+**Central Repository:** ServiceNow is the primary system of record for documenting incidents. Detailed information should also be stored in a secure knowledge base or wiki.
+
+1. **Incident Ticket (ServiceNow):**  
+   - **Initial Entry:** L1 or L2 populates alert details, assigned severity, date/time of detection.  
+   - **Updates:** Ongoing notes documenting key actions, communications, escalations.  
+   - **Closure:** Final summary, root cause findings, and recommended mitigations.
+
+2. **Collaboration and Evidence Gathering:**  
+   - Use Slack channels for quick coordination; archive relevant chat logs into the ticket.  
+   - Store forensic evidence (e.g., memory images, log exports) in a secure evidence folder with restricted access.
+
+3. **Incident Report Template:**  
+   - **Overview:** Incident summary, date/time, impacted systems.  
+   - **Indicators of Compromise (IOCs):** List of relevant indicators (IP, hashes, domain names).  
+   - **Timeline:** Step-by-step chronology (detection, containment, eradication, recovery).  
+   - **Root Cause & Impact:** What caused the incident and its effect on business operations.  
+   - **Lessons Learned:** Proposed improvements or changes to prevent reoccurrence.  
+   - **Sign-Off:** Final approval by the Team Leader or SOC Manager.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+## 7. Client Communication
+
+1. **Communication Channels:**  
+   - **ServiceNow:** Main ticketing and status updates.  
+   - **Email:** Formal notifications to client stakeholders or executives.  
+   - **Slack/PagerDuty:** Real-time communications for urgent issues, typically for the client’s on-call contacts.
+
+2. **Frequency:**  
+   - **Critical Incidents (Severity 1 & 2):** Hourly or as agreed in the SLA until contained, then daily until resolution.  
+   - **Medium & Low Severity (3 & 4):** Daily or as specified by the SLA during investigation and containment.
+
+3. **Escalation:**  
+   - If the incident escalates to a critical level, engage the SOC Manager or Incident Commander immediately.  
+   - Provide timely updates to the client’s designated POC or escalation contacts.
+
+4. **Status Updates & Final Report:**  
+   - Include an interim report during the containment or eradication phase if it is a prolonged incident.  
+   - Provide a final incident report within the agreed timeframe (e.g., 5 business days after closure).
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+## 8. Post-Incident Review (Lessons Learned)
+
+A structured **Lessons Learned** process ensures continuous improvement and alignment with industry best practices:
+
+1. Schedule a Review Meeting: Within two weeks of incident closure.  
+2. Attendees: All SOC analysts involved (L1, L2, L3), Team Lead, SOC Manager, and key client representatives (if applicable).  
+3. Agenda:  
+   - **Incident Recap:** High-level overview of what happened, detection methods used.  
+   - **Timeline Analysis:** What could have been done faster or differently?  
+   - **Technical Findings:** Root cause, vulnerabilities exploited, threat actor TTPs (Tactics, Techniques, and Procedures).  
+   - **Communication Analysis:** Did we follow escalation pathways effectively? Were client communications clear?  
+   - **Process Improvement:** Updates to detection rules in Datadog, new correlation logic, revised runbooks.  
+   - **Action Items:** Assign owners and deadlines for any improvements or additional remediation steps.
+
+4. Documentation: Summarize the lessons learned in a Post-Incident Review document linked to the final ServiceNow ticket.
+
+
+====================================================================================
+====================================================================================
+====================================================================================
+
+
+## 9. Maintenance and Continuous Improvement
+
+1. **Regular Reviews of This Plan:** Update the Incident Management Plan at least annually or whenever significant changes occur (e.g., new technologies, new threat landscapes).  
+2. **Training and Awareness:** Conduct refresher sessions for all SOC staff to stay current with new threats, tools, or procedures.  
+3. **Testing and Exercises:** Periodically test the plan through tabletop exercises, red/blue team exercises, or simulated incidents.  
+4. **Tooling Integration:** Continually refine Datadog SIEM rules and threat intelligence platform integrations for better detection efficacy.

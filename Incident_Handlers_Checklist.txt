@@ -1,0 +1,46 @@
+Preparation
+ - Is the contact roster up-to-date?
+ - Are all PACE plans tests for usability?
+ - Are client stakeholder's aware of their responsibilities?
+ - Have there been any drills or exercises to test response plans?
+
+
+Identification
+ - Where did the incident occur?
+ - Who reported it?
+ - What detection method was used to identify the incident?
+ - What is the scope of the impact?
+ - What is the business impact?
+ - What is/are the source(s) of the incident?
+
+====>
+====> This is where Rapdev would pass off responsibility for handling to the customer. However,
+====> Rapdev will help inform Containment and Eradication phases.
+====>
+
+Containment
+- Short term:
+    - Can the incident be isolated?
+        - If yes, proceed to contained
+        - If no, track impact across business areas or other systems to identify scope
+    - Are all affected systems isolated?
+        - If yes, proceed
+        - If no, continue incident investigation for other hosts impacted
+
+- Long term:
+    - 
+
+Eradication
+ - Can the system(s) be reimaged?
+ - Can the system(s) be hardened to prevent future attacks? (patching, compensating controls, etc.)
+ - Has the system be cleaned of malicious artifacts?
+
+
+Recovery -- Not in Rapdev's perview
+
+
+Lessons Learned
+ - Has all documentation been completed?
+ - Does the incident report document each phase of the incident repsonse cycle (that Rapdev participated in)?
+ - Does the incident report answer the 5 W's for each phase?
+ - Has a meeting to discuss Lessons Learned been scheduled?
