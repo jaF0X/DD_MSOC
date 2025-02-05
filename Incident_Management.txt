@@ -111,45 +111,47 @@ guidance.
 3. Roles and Responsibilities
 
 3.1 Level 1 (L1) SOC Analyst
-- Primary Role: First responder; monitors SIEM dashboards and alerts (Datadog).  
+- Primary Role: First responder; monitors SIEM dashboards and alerts.  
 - Responsibilities:  
-  1. Alert Monitoring & Validation: Review real-time alerts, assess potential impact, and validate if an incident is occurring.  
+  1. Alert Monitoring & Validation: Review real-time alerts, assess potential impact, and assess need to escalate security event into an incident.  
   2. Initial Triage: Determine the urgency and severity based on established criteria.  
-  3. Ticket Creation & Documentation: Open a ServiceNow ticket for each potential incident with initial findings and timeline.  
-  4. Escalation to L2: Notify L2 analyst or on-call personnel (via Slack or PagerDuty) if the incident is confirmed or if further investigation is needed.  
+  3. Ticket Creation & Documentation: Open a ServiceNow ticket for each potential incident with initial findings and timeline; Use Datadog Case Management as needed;
+                                       Use Datadog Notebooks as needed for information tracking and archiving.
+  4. Escalation to L2: Notify L2 analyst if further investigation is required; exercise PACE plan if there is a confirmed incident
   5. Communication: Provide succinct initial updates to the SOC Team Lead.
+  6. Threat Detection: Stay abreast of emerging attack methods; draft new detection rules.
 
 3.2 Level 2 (L2) SOC Analyst
 - Primary Role: Deep-dive investigations and incident confirmation.  
 - Responsibilities:  
-  1. Advanced Analysis: Investigate suspicious alerts escalated by L1 using additional data sources (EDR logs, firewall logs, threat intel).  
+  1. Advanced Analysis: Investigate suspicious alerts escalated by L1. 
   2. Incident Classification: Confirm if an actual security incident is occurring and classify the type (e.g., malware infection, unauthorized access, phishing).  
-  3. Initial Containment Actions: Initiate containment procedures in collaboration with the customer’s IT team (e.g., isolating systems, blocking indicators).  
-  4. Escalation to L3: If the incident is complex, high-risk, or requires specialized expertise, escalate with detailed analysis.  
-  5. Documentation: Update ServiceNow tickets with investigative steps, evidence, and timeline.
+  3. Escalation to L3: If the incident is complex, high-risk, or requires specialized expertise, escalate with detailed analysis.  
+  4. Documentation: Update Datadog Case, Datadog Notebooks, and ServiceNow tickets as necessary with investigative steps, evidence, and timeline.
+  5. Threat Detection: Review threat intelligence feeds for new exploits and attack methods; develop, test, and implement new detection rules; test and valdate detection
+                        rules written by L1 Analysts.
 
 3.3 Level 3 (L3) SOC Analyst
-- Primary Role: Subject matter expert; designs containment/eradication strategies for complex incidents.  
+- Primary Role: Subject matter expert; advises clients on containment/eradication strategies for complex incidents.  
 - Responsibilities:  
-  1. Root Cause Analysis: Use forensic techniques and advanced tools to determine the scope and root cause of incidents.  
-  2. Eradication & Recovery Plans: Develop tailored eradication and recovery strategies in coordination with the client’s infrastructure teams.  
-  3. Threat Intelligence Correlation: Cross-reference threat intelligence feeds, correlate IOCs (Indicators of Compromise) across broader datasets.  
-  4. Coordination with External Teams: Engage with third-party vendors (if required) or specialized teams for specific incident response activities.  
-  5. Technical Guidance: Provide detailed remediation steps and guidance to L2 and local IT/Engineering teams.  
-  6. Documentation: Update the incident ticket with technical findings, recommended solutions, and final outcomes.
+  1. Root Cause Analysis: Use forensic techniques and information available to determine the scope and root cause of incidents.  
+  2. Eradication & Recovery Plans: Work with client stakeholders and advise on tailored eradication and recovery strategies.  
+  3. Threat Intelligence Correlation: Cross-reference threat intelligence feeds, correlate IOCs across broader datasets.  
+  4. Technical Guidance: Provide guidance, mentorship, development pathways to L1 and L2 analysts, and to client teams as requested.  
+  5. Documentation: Update Datadog Cases and Notebooks and ServiceNow tickets with technical findings, recommended solutions, and outcomes.
 
 3.4 Team Leader (TL)
 - Primary Role: Operational oversight of the SOC analysts (L1, L2, L3).  
 - Responsibilities:  
-  1. Task Coordination: Ensure tasks are appropriately assigned and the incident response timeline is on track.  
+  1. Task Coordination: Ensure Teams and Projects are properly set up within Datadog; manage Security Signal and Case investigation to analysts.
   2. Quality Assurance: Review investigation steps and confirm the accuracy and completeness of documentation.  
-  3. Resource Allocation: Coordinate additional resources or specialized skills if the incident escalates.  
-  4. Client Communication: Act as a point of contact for client updates when incidents are in progress (unless an Incident Commander is activated).  
-  5. Incident Reporting: Oversee final incident reporting and ensure sign-off from relevant stakeholders.
+  3. Resource Allocation: Coordinate additional resources or specialized skills as needed across investigation phases.  
+  4. Client Communication: Act as a point of contact for routine (weekly, monthly, quarterly, etc.) client updates and reporting (unless an Incident Commander is activated).  
+  5. Incident Reporting: Oversee reporting and ensure sign-off from relevant stakeholders.
 
 3.5 SOC Manager / Incident Commander (If Activated)
 - Primary Role: Overall leadership in critical or high-severity incidents that may have significant business impact.  
-- Responsibilities:  
+- Responsibilities:
   1. Strategic Decision-Making: Make executive-level decisions regarding resource mobilization, public communication, and external reporting.  
   2. Executive Updates: Communicate incident status to senior management or executives within the customer organization.  
   3. Legal/Compliance Coordination: Engage legal counsel or compliance officers if there is potential liability or regulatory reporting requirements.  
@@ -162,14 +164,29 @@ guidance.
 ====================================================================================
 
 
-4. Incident Classification and Severity Levels
+4. Classification and Severity Levels
 
-Define categories and severity levels to ensure consistent triage and escalation. Below is an example structure:
+Security Signal and Case categories, as designated by Datadog, are Critical (P1), High (P2), Medium (P3), Low (P4), and Info (5).
 
-1. Severity 1 – Critical: Significant business impact (e.g., large-scale ransomware outbreak).  
-2. Severity 2 – High: Potential for major compromise or data loss if not contained quickly (e.g., targeted malware, privilege escalation).  
-3. Severity 3 – Medium: Localized incidents with limited impact (e.g., single host malware infection).  
-4. Severity 4 – Low: Suspicious activity or minor policy violations with minimal immediate impact (e.g., repeated failed logins).
+1. Critical - Priority 1 : Security Signals with a Critical severity level are associated with Priority 1 (P1) level Cases. These events have possible
+                           grave business impacts and take presendece for invesigation over all Security Signal severities below. Signals in this category
+                           will be assigned directly to L2 analysts or above.
+
+2. High     - Priority 2 : Security Signals with a High severity level are assoicated with Priority 2 (P2) level Cases. These events have possible
+                           serious business impacts if not acted on quickly and take precedence for investigation over Info, Low, and Medium-level Signals.
+                           Signals of High severity / Cases of Priority 2 may be assigned to L1 analysts as deemed appropriate by the Team Leader or SOC Manager.
+
+3. Medium   - Priority 3 : Security Signals with a Medium severity level are assoicated with Priority 3 (P3) level Cases. These events are generally localized
+                           with likely limited impact. Team Leaders may assign any Analysts to invesigate these events.
+
+4. Low      - Priority 4 : Security Signals with a Low severity level are associated with Priority 4 (P4) level Cases. These events are capture suspicious activity
+                           or minor policy violations with likely minimal immediate impacts. Analysts should be aware that while Low severity Security Signals do not
+                           represent the same immediate danger as high severity signals, they may be related attacker activity through event correlation or follow-on
+                           actions post-Initial Access. Team Leaders may assign Analysts to invesgiation these events as needed.
+
+5. Info     - Priority 5 : Security Signals with an Info severity level are associated with Priorty 5 (P5) level Cases. These events represent the lowest tier of
+                           activity that can generate a Security Signal within Datadog. Info-level severities may capture suspicious activity but generally captures
+                           low impact events. Assigning Analyst to invesgiate these Signals should be done after all higher severity signals are covered.
 
 
 ====================================================================================
@@ -179,17 +196,17 @@ Define categories and severity levels to ensure consistent triage and escalation
 
 5. Incident Handling Procedures
 
-Below is an overview aligned with the SANS Incident Handling Steps:
+Below is an overview aligned with the SANS Incident Handling Steps.
 
 5.1 Preparation
-- Maintain an updated Incident Response Playbook for each incident type (malware, phishing, insider threat, etc.).  
-- Update threat intelligence feeds in Datadog and ensure correlation rules are functioning.  
-- Conduct training and tabletop exercises quarterly.  
-- Keep contact lists (internal SOC, customer IT, vendors) in an accessible location.
+- Maintain updated Playbooks.
+- Ensure correlation rules are functioning; review threat intelligence feeds. 
+- Conduct training exercises.  
+- Keep contact lists (internal SOC, customer IT, vendors) in an accessible location known to all.
 
 5.2 Identification
-1. Alert Generated: Datadog SIEM sends an alert to the L1 queue.  
-2. Initial Analysis: L1 evaluates the log data, checks severity, and opens or updates a ServiceNow ticket.  
+1. Alert Generated: Datadog SIEM sends an alert Signal Dashboard. Based on severity or Team Leader intervention, a triaging Analyst is assigned.
+2. Initial Analysis: Triaging analyst evaluates the log data and opens or updates a ServiceNow ticket.  
 3. Notification: If suspicious, L1 alerts the Team Lead and escalates to L2 as needed.
 
 5.3 Containment
@@ -218,7 +235,7 @@ Below is an overview aligned with the SANS Incident Handling Steps:
 ====================================================================================
 
 
-## 6. Documentation and Reporting
+6. Documentation and Reporting
 
 Central Repository: ServiceNow is the primary system of record for documenting incidents. Detailed information should
 also be stored in a secure knowledge base or wiki.
@@ -246,7 +263,7 @@ also be stored in a secure knowledge base or wiki.
 ====================================================================================
 
 
-## 7. Client Communication
+7. Client Communication
 
 1. Communication Channels:  
    - ServiceNow: Main ticketing and status updates.  
@@ -271,7 +288,7 @@ also be stored in a secure knowledge base or wiki.
 ====================================================================================
 
 
-## 8. Post-Incident Review (Lessons Learned)
+8. Post-Incident Review (Lessons Learned)
 
 A structured Lessons Learned process ensures continuous improvement and alignment with industry best practices:
 
@@ -293,7 +310,7 @@ A structured Lessons Learned process ensures continuous improvement and alignmen
 ====================================================================================
 
 
-## 9. Maintenance and Continuous Improvement
+9. Maintenance and Continuous Improvement
 
 1. Regular Reviews of This Plan: Update the Incident Management Plan at least annually or whenever significant changes occur (e.g., new technologies, new threat landscapes).  
 2. Training and Awareness: Conduct refresher sessions for all SOC staff to stay current with new threats, tools, or procedures.  
